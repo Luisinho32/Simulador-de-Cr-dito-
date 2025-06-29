@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Crédito</title>
+    <link rel="manifest" id="manifest-placeholder">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjNGY0NmU1IiBkPSJNMjU2IDhDMTE5IDggOCAxMTkgOCAyNTZzMTExIDI0OCAyNDggMjQ4IDI0OC0xMTEgMjQ4LTI0OFMzOTMgOCAyNTYgOHptMCA0NDhjLTExMC41IDAtMjAwLTg5LjUtMjAwLTIwMFMxNDUuNSA1NiAyNTYgNTZzMjAwIDg5LjUgMjAwIDIwMC04OS41IDIwMC0yMDAgMjAwem0xMDEuOC0yNjEuN2MtNS4yIDYuMS0xMi45IDkuNi0yMS44IDkuNi0xNi4zIDAtMzAuNC0xMC44LTM1LjctMjcuMS0yLjUtNi40LTMuOS0xMy4xLTMuOS0yMC4xIDAtMTMuMSA0LjItMjQuOCAxMS44LTMxLjIgNS4yLTYuMSAxMi45LTkuNiAyMS44LTkuNiAxNi4zIDAgMzAuNCAxMC44IDM1LjcgMjcuMSAyLjUgNi40IDMuOSAxMy4xIDMuOSAyMC4xIDAgMTMuMS00LjIgMjQuOC0xMS44IDMxLjJ6bS0xMjAuMSA0OC4xYy0xLjEgMS4xLTIuOSAzLjctNC4zIDQuNC0zLjcgMS44LTEyLjEgMi4xLTE3LjkgMi4xLTE3LjEgMC0zMy4zLTYuOS00NS40LTE5LjEtMTIuMS0xMi4xLTE5LjEtMjguMy0xOS4xLTQ1LjQgMC01LjguMy0xNC4yIDIuMS0xNy45LjctMS40IDMuMy0zLjIgNC40LTQuMyAxMC4xLTEwLjEgMjcuNC0xMS44IDQxLjktMTEuOCAxNC40IDAgMzEuNyAxLjcgNDEuOCAxMS44IDEwLjEgMTAuMSAxMS44IDI3LjQgMTEuOCA0MS45IDAgMTQuNC0xLjcgMzEuOC0xMS44IDQxLjl6Ii8+PC9zdmc+">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript">
+      // Embedded manifest
+      const manifest = {
+        "name": "Simulador de Crédito",
+        "short_name": "CréditoCalc",
+        "description": "Calculadora de pagos para ventas a crédito",
+        "start_url": "/",
+        "display": "standalone",
+        "background_color": "#f8fafc",
+        "theme_color": "#4f46e5",
+        "icons": [
+          {
+            "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjNGY0NmU1IiBkPSJNMjU2IDhDMTE5IDggOCAxMTkgOCAyNTZzMTExIDI0OCAyNDggMjQ4IDI0OC0xMTEgMjQ4LTI0OFMzOTMgOCAyNTYgOHptMCA0NDhjLTExMC41IDAtMjAwLTg5LjUtMjAwLTIwMFMxNDUuNSA1NiAyNTYgNTZzMjAwIDg5LjUgMjAwIDIwMC04OS41IDIwMC0yMDAgMjAwem0xMDEuOC0yNjEuN2MtNS4yIDYuMS0xMi45IDkuNi0yMS44IDkuNi0xNi4zIDAtMzAuNC0xMC44LTM1LjctMjcuMS0yLjUtNi40LTMuOS0xMy4xLTMuOS0yMC4xIDAtMTMuMSA0LjItMjQuOCAxMS44LTMxLjIgNS4yLTYuMSAxMi45LTkuNiAyMS44LTkuNiAxNi4zIDAgMzAuNCAxMC44IDM1LjcgMjcuMSAyLjUgNi40IDMuOSAxMy4xIDMuOSAywMDEgMCAxMy4xLTQuMiAyNC44LTExLjggMzEuMnptLTEyMC4xIDQ4LjFjLTEuMSAxLjEtMi45IDMuNy00LjMgNC40LTMuNyAxLjgtMTIuMSAyLjEtMTcuOSAyLjEtMTcuMSAwLTMzLjMtNi45LTQ1LjQtMTkuMS0xMi4xLTEyLjEtMTkuMS0yOC4zLTE5LjEtNDUuNCAwLTUuOC4zLTE0LjIgMi4xLTE3LjkuNy0xLjQgMy4zLTMuMiA0LjQtNC4zIDEwLjEtMTAuMSAyNy40LTExLjggNDEuOS0xMS44IDE0LjQgMCAzMS43IDEuNyA0MS44IDExLjggMTAuMSAxMC4xIDExLjggMjcuNCAxMS44IDQxLjkgMCAxNC40LTEuNyAzMS44LTExLjggNDEuOXoiLz48L3N2Zz4=",
+            "sizes": "512x512",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+          },
+          {
+            "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTkyIj48cGF0aCBmaWxsPSIjNGY0NmU1IiBkPSJNMTA0IDMyQzYxLjggMzIgMjggNjUuOCAyOCAxMDhjMCAxOC4xIDQuOCAzNS4yIDEzLjIgNTAuMkwxMDQgMzJ6Ii8+PHBhdGggZmlsbD0iIzRlNDZlNSIgZD0iTTEwNCAzMmM0Mi4yIDAgNzYgMzMuOCA3NiA3NiAwIDE4LjEtNC44IDM1LjItMTMuMiA1MC4yTDEwNCAzMnoiLz48cGF0aCBmaWxsPSIjM2U0M2QzIiBkPSJNMTMwLjggMTU4LjJjLTguNCAxNS0yNS4xIDI1LjgtNDMuOCAyNS44LTI4LjUgMC01MS43LTIzLjItNTEuNy01MS43IDAtMTguNyAxMC44LTM1LjQgMjUuOC00My44bDY5LjcgNjkuN3oiLz48L3N2Zz4=",
+            "sizes": "192x192",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+          }
+        ]
+      };
+      document.getElementById('manifest-placeholder').setAttribute('href', 'data:application/json,' + encodeURIComponent(JSON.stringify(manifest)));
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .print-only {
+            display: none;
+        }
+        
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            body {
+                padding: 0;
+                margin: 0;
+                background: white;
+            }
+            .container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+                margin: 0;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-indigo-700 mb-2">
+                <i class="fas fa-calculator mr-2"></i>Simulador de Crédito
+            </h1>
+            <p class="text-gray-600">Calcula fácilmente los pagos de tus ventas a crédito</p>
+        </header>
+
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">
+                <i class="fas fa-edit mr-2 text-indigo-500"></i>Datos de la venta
+            </h2>
+            
+            <form id="creditForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="customerName" class="block text-sm font-medium text-gray-700 mb-1">Nombre del cliente</label>
+                    <input type="text" id="customerName" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                
+                <div>
+                    <label for="productName" class="block text-sm font-medium text-gray-700 mb-1">Producto/Servicio</label>
+                    <input type="text" id="productName" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                
+                <div>
+                    <label for="totalPrice" class="block text-sm font-medium text-gray-700 mb-1">Precio total ($)</label>
+                    <input type="number" id="totalPrice" min="0" step="0.01" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                
+                <div>
+                    <label for="downPayment" class="block text-sm font-medium text-gray-700 mb-1">Enganche ($)</label>
+                    <input type="number" id="downPayment" min="0" step="0.01" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                
+                <div>
+                    <label for="installments" class="block text-sm font-medium text-gray-700 mb-1">Número de cuotas</label>
+                    <input type="number" id="installments" min="1" required class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                
+                <div>
+                    <label for="paymentFrequency" class="block text-sm font-medium text-gray-700 mb-1">Frecuencia de pago</label>
+                    <select id="paymentFrequency" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="monthly">Mensual</option>
+                        <option value="biweekly">Quincenal</option>
+                        <option value="weekly">Semanal</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="interestRate" class="block text-sm font-medium text-gray-700 mb-1">Tasa de interés (% opcional)</label>
+                    <input type="number" id="interestRate" min="0" max="100" step="0.1" value="0" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                
+                <div class="md:col-span-2 flex justify-center mt-4">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded-md transition duration-300 flex items-center">
+                        <i class="fas fa-calculator mr-2"></i> Calcular
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="resultsContainer" class="bg-white rounded-lg shadow-md p-6 mb-8 hidden fade-in">
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h2 class="text-xl font-semibold text-gray-800">
+                    <i class="fas fa-file-invoice-dollar mr-2 text-indigo-500"></i>Resultados de la simulación
+                </h2>
+                <div class="flex space-x-2">
+                    <button id="saveSimulation" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md text-sm flex items-center">
+                        <i class="fas fa-save mr-1"></i> Guardar
+                    </button>
+                    <button id="printSimulation" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md text-sm flex items-center">
+                        <i class="fas fa-print mr-1"></i> Imprimir
+                    </button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-indigo-50 p-4 rounded-lg">
+                    <p class="text-sm text-indigo-700 font-medium">Monto financiado</p>
+                    <p id="financedAmount" class="text-2xl font-bold text-indigo-900">$0.00</p>
+                </div>
+                
+                <div class="bg-indigo-50 p-4 rounded-lg">
+                    <p class="text-sm text-indigo-700 font-medium">Total a pagar</p>
+                    <p id="totalToPay" class="text-2xl font-bold text-indigo-900">$0.00</p>
+                </div>
+                
+                <div class="bg-indigo-50 p-4 rounded-lg">
+                    <p class="text-sm text-indigo-700 font-medium">Valor cuota</p>
+                    <p id="installmentValue" class="text-2xl font-bold text-indigo-900">$0.00</p>
+                </div>
+            </div>
+            
+            <h3 class="font-medium text-gray-700 mb-2">Detalle de cuotas</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cuota #</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha estimada</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="installmentsTable" class="bg-white divide-y divide-gray-200">
+                        <!-- Aquí se llenarán las cuotas dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="printHeader" class="print-only mt-4 p-4 border-b">
+                <h2 class="text-xl font-bold">Comprobante de Simulación</h2>
+                <p id="printDate" class="text-sm text-gray-600"></p>
+            </div>
+            
+            <div id="printCustomerInfo" class="print-only grid grid-cols-2 gap-4 mt-4 p-4">
+                <div>
+                    <p class="font-semibold">Cliente:</p>
+                    <p id="printCustomerName"></p>
+                </div>
+                <div>
+                    <p class="font-semibold">Producto/Servicio:</p>
+                    <p id="printProductName"></p>
+                </div>
+                <div>
+                    <p class="font-semibold">Precio total:</p>
+                    <p id="printTotalPrice"></p>
+                </div>
+                <div>
+                    <p class="font-semibold">Enganche:</p>
+                    <p id="printDownPayment"></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="historyContainer" class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h2 class="text-xl font-semibold text-gray-800">
+                    <i class="fas fa-history mr-2 text-indigo-500"></i>Historial de simulaciones
+                </h2>
+                <button id="clearHistory" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md text-sm flex items-center">
+                    <i class="fas fa-trash-alt mr-1"></i> Borrar todo
+                </button>
+            </div>
+            
+            <div id="historyList" class="space-y-3">
+                <!-- Aquí se mostrarán las simulaciones guardadas -->
+                <p class="text-gray-500 italic" id="emptyHistoryMessage">No hay simulaciones guardadas</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+      // Service Worker registration
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('data:application/javascript,' + encodeURIComponent(`
+            self.addEventListener('install', (event) => {
+              event.waitUntil(self.skipWaiting());
+            });
+            self.addEventListener('activate', (event) => {
+              event.waitUntil(self.clients.claim());
+            });
+            self.addEventListener('fetch', (event) => {
+              event.respondWith(
+                caches.match(event.request).then(response => {
+                  return response || fetch(event.request);
+                })
+              );
+            });
+          `), { scope: '/' }).then(registration => {
+            console.log('ServiceWorker registration successful');
+          }).catch(err => {
+            console.log('ServiceWorker registration failed: ', err);
+          });
+        });
+      }
+
+      // Install prompt handling
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // You can show your custom install button here if needed
+        console.log('PWA install available');
+      });
+
+      document.addEventListener('DOMContentLoaded', function() {
+            // Elementos del formulario
+            const creditForm = document.getElementById('creditForm');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const saveSimulation = document.getElementById('saveSimulation');
+            const printSimulation = document.getElementById('printSimulation');
+            const clearHistory = document.getElementById('clearHistory');
+            const historyList = document.getElementById('historyList');
+            const emptyHistoryMessage = document.getElementById('emptyHistoryMessage');
+            
+            // Cargar historial al iniciar
+            loadHistory();
+            
+            // Manejar el envío del formulario
+            creditForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                calculateCredit();
+            });
+            
+            // Guardar simulación
+            saveSimulation.addEventListener('click', function() {
+                saveCurrentSimulation();
+            });
+            
+            // Imprimir simulación
+            printSimulation.addEventListener('click', function() {
+                preparePrint();
+                window.print();
+            });
+            
+            // Borrar historial
+            clearHistory.addEventListener('click', function() {
+                if (confirm('¿Estás seguro de que deseas borrar todo el historial?')) {
+                    localStorage.removeItem('creditSimulations');
+                    loadHistory();
+                }
+            });
+            
+            // Función para calcular el crédito
+            function calculateCredit() {
+                // Obtener valores del formulario
+                const customerName = document.getElementById('customerName').value;
+                const productName = document.getElementById('productName').value;
+                const totalPrice = parseFloat(document.getElementById('totalPrice').value);
+                const downPayment = parseFloat(document.getElementById('downPayment').value);
+                const installments = parseInt(document.getElementById('installments').value);
+                const paymentFrequency = document.getElementById('paymentFrequency').value;
+                const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+                
+                // Validaciones básicas
+                if (downPayment >= totalPrice) {
+                    alert('El enganche no puede ser mayor o igual al precio total');
+                    return;
+                }
+                
+                // Calcular monto financiado
+                const financedAmount = totalPrice - downPayment;
+                
+                // Calcular interés
+                const totalInterest = financedAmount * (interestRate / 100);
+                const totalToPay = financedAmount + totalInterest;
+                const installmentValue = totalToPay / installments;
+                
+                // Mostrar resultados principales
+                document.getElementById('financedAmount').textContent = formatCurrency(financedAmount);
+                document.getElementById('totalToPay').textContent = formatCurrency(totalToPay);
+                document.getElementById('installmentValue').textContent = formatCurrency(installmentValue);
+                
+                // Generar tabla de cuotas
+                const installmentsTable = document.getElementById('installmentsTable');
+                installmentsTable.innerHTML = '';
+                
+                const today = new Date();
+                let nextPaymentDate = new Date(today);
+                
+                for (let i = 1; i <= installments; i++) {
+                    // Calcular fecha de pago según frecuencia
+                    switch(paymentFrequency) {
+                        case 'weekly':
+                            nextPaymentDate.setDate(nextPaymentDate.getDate() + 7);
+                            break;
+                        case 'biweekly':
+                            nextPaymentDate.setDate(nextPaymentDate.getDate() + 14);
+                            break;
+                        case 'monthly':
+                            nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1);
+                            break;
+                    }
+                    
+                    const formattedDate = formatDate(nextPaymentDate);
+                    
+                    const row = document.createElement('tr');
+                    row.className = i % 2 === 0 ? 'bg-gray-50' : 'bg-white';
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${i}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formattedDate}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-medium">${formatCurrency(installmentValue)}</td>
+                    `;
+                    
+                    installmentsTable.appendChild(row);
+                }
+                
+                // Mostrar resultados
+                resultsContainer.classList.remove('hidden');
+                
+                // Guardar datos actuales para posible guardado
+                currentSimulation = {
+                    customerName,
+                    productName,
+                    totalPrice,
+                    downPayment,
+                    installments,
+                    paymentFrequency,
+                    interestRate,
+                    financedAmount,
+                    totalToPay,
+                    installmentValue,
+                    calculationDate: new Date().toISOString()
+                };
+            }
+            
+            // Función para guardar la simulación actual
+            function saveCurrentSimulation() {
+                if (!currentSimulation) {
+                    alert('No hay simulación para guardar');
+                    return;
+                }
+                
+                let simulations = JSON.parse(localStorage.getItem('creditSimulations')) || [];
+                
+                // Agregar nueva simulación al inicio del array
+                simulations.unshift(currentSimulation);
+                
+                // Limitar a las últimas 20 simulaciones
+                if (simulations.length > 20) {
+                    simulations = simulations.slice(0, 20);
+                }
+                
+                localStorage.setItem('creditSimulations', JSON.stringify(simulations));
+                loadHistory();
+                
+                // Mostrar notificación
+                alert('Simulación guardada correctamente');
+            }
+            
+            // Función para cargar el historial
+            function loadHistory() {
+                const simulations = JSON.parse(localStorage.getItem('creditSimulations')) || [];
+                
+                if (simulations.length === 0) {
+                    emptyHistoryMessage.classList.remove('hidden');
+                    historyList.innerHTML = '';
+                    return;
+                }
+                
+                emptyHistoryMessage.classList.add('hidden');
+                historyList.innerHTML = '';
+                
+                simulations.forEach((sim, index) => {
+                    const simElement = document.createElement('div');
+                    simElement.className = 'bg-gray-50 p-4 rounded-lg hover:bg-gray-100 transition cursor-pointer';
+                    simElement.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-medium text-indigo-700">${sim.customerName}</h3>
+                                <p class="text-sm text-gray-600">${sim.productName}</p>
+                                <p class="text-xs text-gray-500 mt-1">${formatDate(new Date(sim.calculationDate))}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-medium">${formatCurrency(sim.totalToPay)}</p>
+                                <p class="text-sm text-gray-600">${sim.installments} cuotas de ${formatCurrency(sim.installmentValue)}</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    simElement.addEventListener('click', function() {
+                        loadSimulationDetails(sim);
+                    });
+                    
+                    historyList.appendChild(simElement);
+                });
+            }
+            
+            // Función para cargar los detalles de una simulación guardada
+            function loadSimulationDetails(simulation) {
+                // Llenar el formulario con los datos guardados
+                document.getElementById('customerName').value = simulation.customerName;
+                document.getElementById('productName').value = simulation.productName;
+                document.getElementById('totalPrice').value = simulation.totalPrice;
+                document.getElementById('downPayment').value = simulation.downPayment;
+                document.getElementById('installments').value = simulation.installments;
+                document.getElementById('paymentFrequency').value = simulation.paymentFrequency;
+                document.getElementById('interestRate').value = simulation.interestRate;
+                
+                // Calcular y mostrar resultados
+                calculateCredit();
+                
+                // Desplazarse a los resultados
+                resultsContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Función para preparar datos para imprimir
+            function preparePrint() {
+                if (!currentSimulation) return;
+                
+                const now = new Date();
+                document.getElementById('printDate').textContent = `Generado el ${formatDate(now)} a las ${formatTime(now)}`;
+                document.getElementById('printCustomerName').textContent = currentSimulation.customerName;
+                document.getElementById('printProductName').textContent = currentSimulation.productName;
+                document.getElementById('printTotalPrice').textContent = formatCurrency(currentSimulation.totalPrice);
+                document.getElementById('printDownPayment').textContent = formatCurrency(currentSimulation.downPayment);
+            }
+            
+            // Funciones de formato auxiliares
+            function formatCurrency(amount) {
+                return '$' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            }
+            
+            function formatDate(date) {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                return date.toLocaleDateString('es-ES', options);
+            }
+            
+            function formatTime(date) {
+                const options = { hour: '2-digit', minute: '2-digit' };
+                return date.toLocaleTimeString('es-ES', options);
+            }
+            
+            // Variable para almacenar la simulación actual
+            let currentSimulation = null;
+        });
+    </script>
+</body>
+</html>
